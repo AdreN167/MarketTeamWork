@@ -4,6 +4,8 @@ using Market.Models;
 using Market.Services;
 using System.Collections;
 using System.Collections.Generic;
+using Market.PaymentMethods;
+using Market.Verification;
 
 namespace Market.UI
 {
@@ -11,6 +13,8 @@ namespace Market.UI
     {
         private FlatDataAccess _flatDataAccess;
         private HouseDataAccess _houseDataAccess;
+        private UserDataAccess _userDataAccess;
+        private IVerification _sendMessageService;
 
         public Menu()
         {
@@ -18,6 +22,9 @@ namespace Market.UI
 
             _flatDataAccess = new FlatDataAccess();
             _houseDataAccess = new HouseDataAccess();
+            _userDataAccess = new UserDataAccess();
+
+            _sendMessageService = new TwilioClass();
         }
 
         public void MainMenu()
@@ -220,27 +227,159 @@ namespace Market.UI
             var isEnd = false;
             while (!isEnd)
             {
-                // TODO
+                Console.Clear();
+                ShowMenu("-------------Меню покупки------------", "Купить", "Назад");
+                Console.Write("Ваш выбор: ");
+
+                if (!int.TryParse(Console.ReadLine(), out int сhoice))
+                {
+                    ThrowError("Некорректный ввод!");
+                    continue;
+                }
+
+                switch (сhoice)
+                {
+                    case 1:
+
+                        if (!house.IsSold)
+                        {
+                            Console.WriteLine("Ожидание оплаты...");
+                            IPayment qiwi = new QIWI();
+                            if (qiwi.ToPay(house.Price))
+                            {
+                                if (house is House)
+                                {
+                                    _houseDataAccess.Update(house as House, "IsSold", "1");
+                                    Console.Clear();
+                                    Console.WriteLine("Вы купили Дом!");
+                                }
+                                else if (house is Flat)
+                                {
+                                    _flatDataAccess.Update(house as Flat, "IsSold", "1");
+                                    Console.Clear();
+                                    Console.WriteLine("Вы купили Квартиру!");
+                                }
+                            }
+                            else
+                                Console.WriteLine("Покупка не удалась!");
+                        }
+                        else
+                            Console.WriteLine("Квартира уже продана!");
+
+                        isEnd = true;
+                        Console.ReadLine();
+
+                        break;
+
+                    case 2:
+
+                        isEnd = true;
+
+                        break;
+                }
+
             }
         }
 
         private void RegistrationMenu()
         {
-            // TODO
-            MarketMenu();
+
+            var isEnd = false;
+            while (!isEnd)
+            {
+                Console.ReadLine();
+                Console.Clear();
+
+                Console.WriteLine(" -------------Меню регистрации------------");
+
+                User user = VerificationMenu();
+                if (user == null)
+                    continue;
+
+                _userDataAccess.Insert(user);
+
+                Console.WriteLine("Регистрация прошла успешно!");
+                isEnd = true;
+            }
         }
 
         private void LogInMenu()
         {
-            // TODO
+
+            var isEnd = false;
+            while (!isEnd) 
+            {
+                Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine(" -------------Меню входа------------");
+                ShowMenu("Начать", "Назад");
+
+
+                User user = VerificationMenu();
+                if (user == null)
+                    continue;
+
+                var users = _userDataAccess.SelectBy(user.TelephoneNumber);
+
+                if (users.Count == 0)
+                    continue;
+
+                Console.WriteLine("Вхождение прошло успешно!");
+                isEnd = true;
+
+            }
             MarketMenu();
         }
 
+        private User VerificationMenu()
+        {
+
+            Console.WriteLine("Введите Ваш номер телефона (В формате +7##########): ");
+            string phoneNumber = Console.ReadLine();
+
+            if (phoneNumber[0] != '+' && phoneNumber.Length != 12)
+            {
+                ThrowError("Вы ввели номер неправильного формата!");
+                return null;
+            }
+
+            //Переменная, которая будет хранить код, отправленный на телефон
+            string sentCode = string.Empty;
+            //Переменная хранящая код, введеный пользвателем
+            string userCode = string.Empty;
+
+            //Try catch Блок - у пользователя может не быть интернета
+            try
+            {
+                sentCode = _sendMessageService.SendMessage(phoneNumber);
+            }
+            catch
+            {
+                ThrowError("Что-то пошло не так!");
+                return null;
+            }
+
+            Console.WriteLine("Введите код с телефона: ");
+            userCode = Console.ReadLine();
+
+            if (sentCode != userCode)
+            {
+                ThrowError("Неверный код, повторите попытку!");
+                return null;
+            }
+            User user = new User() { TelephoneNumber = phoneNumber };
+
+            return user;
+
+        }
+
+
         private void ShowProducts(ICollection products)
         {
+            int count = 1;
             foreach (var product in products)
             {
-                int count = 1;
+                //int count = 1;
                 if (product is Flat flat)
                 {
                     Console.WriteLine($"~~Квартира[{count++}]~~");
