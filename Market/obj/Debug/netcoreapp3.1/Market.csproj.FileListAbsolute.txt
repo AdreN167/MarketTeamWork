@@ -24,7 +24,7 @@ C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подкл
 C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подключения\part 3\Market\Market\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Physical.dll
 C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подключения\part 3\Market\Market\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileSystemGlobbing.dll
 C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подключения\part 3\Market\Market\bin\Debug\netcoreapp3.1\System.Text.Json.dll
-C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подключения\part 3\Market\Market\obj\Debug\netcoreapp3.1\Market.csproj.CoreCompileInputs.cache
 C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подключения\part 3\Market\Market\obj\Debug\netcoreapp3.1\Market.dll
 C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подключения\part 3\Market\Market\obj\Debug\netcoreapp3.1\Market.pdb
 C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подключения\part 3\Market\Market\obj\Debug\netcoreapp3.1\Market.genruntimeconfig.cache
+C:\Users\www\Desktop\STEP_lessons\ADO.NET\Модуль 2 Уровни подключения\part 3\Market\Market\obj\Debug\netcoreapp3.1\Market.csproj.CoreCompileInputs.cache

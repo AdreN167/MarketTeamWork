@@ -1,23 +1,24 @@
 ﻿namespace Market.Models
 {
-    public class House : Product
+    public class House : Realty
     {
-        public int DistanceToTheСity { get; set; }
+        public double DistanceToTheСity { get; set; }
         public string WallsMaterial { get; set; }
         public int FloorsCount { get; set; }
-        public string Address { get; set; }
-        public double Area { get; set; }
         public bool IsInfrastructure { get; set; }
-        public bool IsGarage { get; set; }
-        public bool IsWarehouse { get; set; }
+        public bool IsCellar { get; set; }
+        public bool IsBathhouse { get; set; }
+        public double GardensArea { get; set; }
 
         public override string ToString()
         {
             var baseResult = base.ToString();
-            var IsInfrastructureAsText = (IsInfrastructure) ? "есть" : "нет";
-            var IsGarageAsText = (IsGarage) ? "есть" : "нет";
-            var IsWarehouseAsText = (IsWarehouse) ? "есть" : "нет";
-            return $"Адрес: {Address}\nПлощадь: {Area}\nКоличество этажей: {FloorsCount}\nРасстояние до города: {DistanceToTheСity}\nМатериал стен: {WallsMaterial}\nИнфраструктура: {IsInfrastructureAsText}\nГараж: {IsGarageAsText}\nСклад: {IsWarehouseAsText}\n{baseResult}";
+            var isInfrastructureAsText = (IsInfrastructure) ? "есть" : "нет";
+            var isGarageAsText = (IsGarage) ? "есть" : "нет";
+            var isWarehouseAsText = (IsWarehouse) ? "есть" : "нет";
+            var isCellarAsText = (IsCellar) ? "есть" : "нет";
+            var isBathhouseAsText = (IsBathhouse) ? "есть" : "нет";
+            return $"{baseResult}\nКоличество этажей: {FloorsCount}\nРасстояние до города: {DistanceToTheСity}\nМатериал стен: {WallsMaterial}\nИнфраструктура: {isInfrastructureAsText}\nГараж: {isGarageAsText}\nСклад: {isWarehouseAsText}\nПодвал: {isCellarAsText}\nБаня: {isBathhouseAsText}\nПлощадь сада: {GardensArea} соток(и)";
         }
     }
 }

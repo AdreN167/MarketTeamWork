@@ -1,20 +1,23 @@
 ﻿namespace Market.Models
 {
-    public class Flat : Product
+    public class Flat : Realty
     {
         public int Floor { get; set; }
-        public int RoomsCount { get; set; }
         public bool IsBuiltInFurniture { get; set; }
-        public double Area { get; set; }
-        public string Address { get; set; }
-        public bool IsRepairedCurrentYear { get; set; }
+        public bool IsConnectedCentralHeating { get; set; }
+        public bool IsParkingPlace { get; set; }
+        public bool IsBalcony { get; set; }
+        public int SanitaryUnitsCount { get; set; }
+        public int YearOfRepair { get; set; }
 
         public override string ToString()
         {
             var baseResult = base.ToString();
-            var IsBuiltInFurnitureAsText = (IsBuiltInFurniture) ? "встроена" : "нет";
-            var IsRepairedCurrentYearAsText = (IsRepairedCurrentYear) ? "в этом году" : "больше года назад";
-            return $"Адрес: {Address}\nПлощадь: {Area}\nЭтаж: {Floor}\nКоличество комнат: {RoomsCount}\nМебель: {IsBuiltInFurnitureAsText}\nПоследний ремонт: {IsRepairedCurrentYearAsText}\n{baseResult}";
+            var isBuiltInFurnitureAsText = (IsBuiltInFurniture) ? "есть" : "нет";
+            var isConnectedCentralHeatingAsText = (IsConnectedCentralHeating) ? "подключена" : "не подключена";
+            var isParkingPlaceAsText = (IsParkingPlace) ? "есть" : "нет";
+            var isBalconyAsText = (IsBalcony) ? "есть" : "нет";
+            return $"{baseResult}\nЭтаж: {Floor}\nНаличие мебели: {isBuiltInFurnitureAsText}\nПодключение к центральному отоплению: {isConnectedCentralHeatingAsText}\nНаличие парковочного места: {isParkingPlaceAsText}\nНаличие балкона: {isBalconyAsText}\nКоличество санузлов: {SanitaryUnitsCount}\nГод последнего ремонта: {YearOfRepair}";
         }
     }
 }

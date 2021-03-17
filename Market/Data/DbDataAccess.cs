@@ -7,8 +7,7 @@ namespace Market.Data
 {
     public abstract class DbDataAccess<T> : IDisposable
     {
-        protected int _offset;
-        protected int _fetch;
+        protected int _rows;
 
         protected readonly int _step;
         protected readonly DbProviderFactory factory;
@@ -16,9 +15,7 @@ namespace Market.Data
 
         public DbDataAccess()
         {
-            _step = 10;
-            _offset = 0;
-            _fetch = 10;
+            _rows = 10;
 
             factory = DbProviderFactories.GetFactory("MarketProvider");
 
@@ -30,31 +27,10 @@ namespace Market.Data
         public void Dispose()
         {
             connection.Close();
-        } 
-
-        public void ExecuteTransaction(params DbCommand[] commands)
-        {
-            using (var transaction = connection.BeginTransaction())
-            {
-                try
-                {
-                    foreach (var command in commands)
-                    {
-                        command.Transaction = transaction;
-                        command.ExecuteNonQuery();
-                    }
-                    transaction.Commit();
-                }
-                catch (DbException)
-                {
-                    transaction.Rollback();
-                }
-            }
         }
 
-        public abstract void Insert(T entity);
         public abstract void Update(T entity);
         public abstract void Delete(T entity);
-        public abstract ICollection<T> Select();
+        public abstract ICollection<T> SelectBy(double area, int price, int roomsCount, int page);
     }
 }
